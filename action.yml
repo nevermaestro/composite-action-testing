@@ -31,11 +31,11 @@ runs:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
     - uses: actions/checkout@v5
     - name: Setup Go Environment
-      uses: actions/setup-go@v6
+      uses: actions/setup-go@v5
       with:
         go-version: '1.25.2'
     - name: Running notifier
-      run: go run main.go -os ${{ inputs.orgslug }} -rs ${{ inputs.reposlug }} -pt ${{ inputs.pat }} -tt ${{ inputs.telegram-token }} -id ${{ inputs.chat-id }}
+      run: go run ${{ github.action_path }}/main.go -os ${{ inputs.orgslug }} -rs ${{ inputs.reposlug }} -pt ${{ inputs.pat }} -tt ${{ inputs.telegram-token }} -id ${{ inputs.chat-id }}
       shell: bash
     - name: All good
       run: echo "Closing..."
