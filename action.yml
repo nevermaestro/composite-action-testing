@@ -21,21 +21,20 @@ inputs:
     description: 'reposlug'
     required: true
     default: ''
+  sourcecraft-workspace:
+    description: 'action path'
+    required: true
+    default: ''
 runs:
   using: "composite"
   steps:
-    - name: Set GitHub Path
-      run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
-      shell: bash
-      env:
-        GITHUB_ACTION_PATH: ${{ github.action_path }}
     - uses: actions/checkout@v5
     - name: Setup Go Environment
       uses: actions/setup-go@v5
       with:
         go-version: '1.25.2'
     - name: Running notifier
-      run: go run ${{ github.action_path }}/main.go -os ${{ inputs.orgslug }} -rs ${{ inputs.reposlug }} -pt ${{ inputs.pat }} -tt ${{ inputs.telegram-token }} -id ${{ inputs.chat-id }}
+      run: go run ${{ inputs.sourcecraft-workspace }}/main.go -os ${{ inputs.orgslug }} -rs ${{ inputs.reposlug }} -pt ${{ inputs.pat }} -tt ${{ inputs.telegram-token }} -id ${{ inputs.chat-id }}
       shell: bash
     - name: All good
       run: echo "Closing..."
