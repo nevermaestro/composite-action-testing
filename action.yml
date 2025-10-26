@@ -29,7 +29,6 @@ runs:
       uses: actions/setup-go@v6
       with:
         go-version: '1.25.2'
-      shell: bash
     - name: Running notifier
       run: go run main.go -os ${{ inputs.orgslug }} -rs ${{ inputs.reposlug }} -pt ${{ inputs.pat }} -tt ${{ inputs.telegram-token }} -id ${{ inputs.chat-id }}
       shell: bash
