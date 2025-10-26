@@ -1,35 +1,35 @@
 name: 'Hello World'
 description: 'Greet someone'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  pat: 
+    description: 'sourcecraft.dev Personal Access Token'
     required: true
-    default: 'World'
-outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-number }}
+    default: ''
+  telegram-token:
+    description: 'telegram bot token'
+    required: true
+    default: ''
+  chat-id:
+    description: 'telegram chat ID'
+    required: true
+    default: ''
+  orgslug:
+    description: 'orgslug'
+    required: true
+    default: ''
+  reposlug:
+    description: 'reposlug'
+    required: true
+    default: ''
 runs:
   using: "composite"
   steps:
-    - name: Set Greeting
-      run: echo "Hello $INPUT_WHO_TO_GREET."
+    - uses: actions/checkout@v5
+    - name: Setup Go Environment
+      uses: actions/setup-go@v6
+      with:
+        go-version: '1.25.2'
+    - run: go run main.go -os ${{ inputs.orgslug }} -rs ${{ inputs.reposlug }} -pt ${{ inputs.pat }} -tt ${{ inputs.telegram-token }} -id ${{ inputs.chat-id }}
+    - name: All good
+      run: echo "Closing..."
       shell: bash
-      env:
-        INPUT_WHO_TO_GREET: ${{ inputs.who-to-greet }}
-
-    - name: Random Number Generator
-      id: random-number-generator
-      run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
-      shell: bash
-
-    - name: Set GitHub Path
-      run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
-      shell: bash
-      env:
-        GITHUB_ACTION_PATH: ${{ github.action_path }}
-
-    - name: Run goodbye.sh
-      run: goodbye.sh
-      shell: bash
-
